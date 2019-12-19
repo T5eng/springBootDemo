@@ -41,7 +41,6 @@ public class RedisService {
             }
             jedis.set(key, str);
             return true;
-
         }finally {
             returnToPool(jedis);
         }
@@ -52,7 +51,6 @@ public class RedisService {
      */
     public static <T> String beanToString(T value){
         if(null==value) return null;
-
         Class<?> clazz = value.getClass();//判断不同类型转换为String
         if(clazz==int.class || clazz==Integer.class){
             return ""+value;
@@ -83,8 +81,6 @@ public class RedisService {
             return JSON.toJavaObject(JSON.parseObject(str), clazz);
         }
     }
-
-
 
     public void returnToPool(Jedis jedis){
         if(null!=jedis){

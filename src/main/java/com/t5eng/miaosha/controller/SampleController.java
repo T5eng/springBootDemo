@@ -57,7 +57,8 @@ public class SampleController {
     @RequestMapping("/redis/get")
     @ResponseBody
     public Result<Integer> redisGet(){
-        Integer v1 = redisService.get("key1", Integer.class);
+        redisService.set("key2", "123456");
+        Integer v1 = redisService.get("key2", Integer.class);
         return Result.success(v1);
     }
 

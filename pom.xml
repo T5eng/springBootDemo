@@ -24,8 +24,13 @@
       <maven.compiler.target>1.7</maven.compiler.target>
     </properties>
 
-
     <dependencies>
+
+      <dependency>
+        <groupId> org.springframework.boot </groupId>
+        <artifactId> spring-boot-configuration-processor </artifactId>
+        <optional> true </optional>
+      </dependency>
 
       <dependency> <!--添加springboot网络的依赖-->
         <groupId>org.springframework.boot</groupId>
