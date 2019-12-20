@@ -1,7 +1,17 @@
 package com.t5eng.miaosha.vo;
 
+import com.t5eng.miaosha.validator.IsMobile; //自定义的修饰符
+import org.hibernate.validator.constraints.Length;
+
+import javax.validation.constraints.NotNull;
+
 public class LoginVo {
+
+    @NotNull
+    @IsMobile //自定义的修饰符
     private String mobile;
+    @NotNull
+    @Length(min=32)
     private String password;
 
     public String getMobile() {

@@ -2,7 +2,7 @@ package com.t5eng.miaosha.util;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
-public class MD5Util {
+public class MD5Util { //将明文密码md5加密, 传入DataBase前再次md5加密
     public static String md5(String src){
         return DigestUtils.md5Hex(src);
     }

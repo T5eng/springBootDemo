@@ -66,8 +66,8 @@ public class SampleController {
     @ResponseBody
     public Result<Boolean> redisSet(){
         User user = new User();
-        user.setId(1);
-        user.setName("00000");
+        user.setId(0000);
+        user.setName("000000");
         redisService.set(UserKey.getById, ""+1, user);
         return Result.success(true);
     }

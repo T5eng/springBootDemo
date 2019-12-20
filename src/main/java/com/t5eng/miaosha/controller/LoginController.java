@@ -19,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 @Controller
 @RequestMapping("/login") /**每个@RequestMapping都会增加一个层级 **/
 public class LoginController {
@@ -37,44 +40,12 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<Boolean> doLogin(LoginVo loginVo){
+    public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo){ //校验输入的是否符合规定
         log.info(loginVo.toString());
-        String passInput = loginVo.getPassword();
-        String mobileNum = loginVo.getMobile();
-        if(StringUtils.isEmpty(passInput)){
-            return Result.error(CodeMsg.PASSWORD_EMPTY);
-        }
-        if(StringUtils.isEmpty(mobileNum)){
-            return Result.error(CodeMsg.MOBILE_EMPTY);
-        }
-        if(!ValidatorUtil.isMobile(mobileNum)){
-            return Result.error(CodeMsg.MOBILE_ERROR);
-        }
         //登录
-        CodeMsg cm = miaoshaUserService.login(loginVo);
-        if(cm.getCode()==0){
-            return Result.success(true);
-        }else{
-            return Result.error(cm);
-        }
+        miaoshaUserService.login(response, loginVo);
+        return Result.success(true);
     }
 
-    @RequestMapping("/hello")
-    @ResponseBody
-    public Result<String> home(){
-        return Result.success("Hello, World!");
-    }
-
-    @RequestMapping("/error")
-    @ResponseBody
-    public Result<String> error(){
-        return Result.error(CodeMsg.SESSION_ERROR);
-    }
-
-    @RequestMapping("/hello/thymeleaf")
-    public String thymeleaf(Model model){
-        model.addAttribute("name", "Joshua");
-        return "hello";
-    }
 
 }

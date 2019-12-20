@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface MiaoshaUserDao {
     @Select("select * from miaosha_user where id=#{id}")
-    public MiaoshaUser getById(@Param("id")long id);
+    public MiaoshaUser getById(@Param("id")long id); //根据id从Redis从获取
 }
