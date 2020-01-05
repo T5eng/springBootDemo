@@ -31,15 +31,15 @@ public class MiaoshaUserService {
         return miaoshaUserDao.getById(id);
     }
 
-    public boolean login(HttpServletResponse response, LoginVo loginVo) {
+    public String login(HttpServletResponse response, LoginVo loginVo) {
 
         if (null==loginVo){
             throw new GlobalException( CodeMsg.SERVER_ERROR); //自定义一个RuntimeException类
         }
         String mobile = loginVo.getMobile();
         String formPass = loginVo.getPassword();
-        //验证手机是否存在
-        MiaoshaUser user = getById(Long.parseLong(mobile));
+
+        MiaoshaUser user = getById(Long.parseLong(mobile)); //连接sql，验证手机是否存在
         if(null==user){
             throw new GlobalException( CodeMsg.MOBILE_NOT_EXIST);
         }
