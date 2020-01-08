@@ -35,17 +35,16 @@ public class LoginController {
 
     @RequestMapping("/to_login")
     public String toLogin(){
-        return "Login";
+        return "login";
     }
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<Boolean> doLogin(HttpServletResponse response, @Valid LoginVo loginVo){ //校验输入的是否符合规定
+    public Result<String> doLogin(HttpServletResponse response, @Valid LoginVo loginVo){ //校验输入的是否符合规定
         log.info(loginVo.toString());
         //登录
-        miaoshaUserService.login(response, loginVo);
-        return Result.success(true);
+        String token = miaoshaUserService.login(response, loginVo);
+        return Result.success(token);
     }
-
 
 }

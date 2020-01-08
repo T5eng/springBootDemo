@@ -12,8 +12,8 @@ import com.t5eng.miaosha.vo.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie; //servlet自带的cookie类
+import javax.servlet.http.HttpServletResponse; //servlet的response
 import java.util.UUID;
 
 @Service
@@ -31,37 +31,51 @@ public class MiaoshaUserService {
         return miaoshaUserDao.getById(id);
     }
 
-    public boolean login(HttpServletResponse response, LoginVo loginVo) {
+    public String login(HttpServletResponse response, LoginVo loginVo) {
 
         if (null==loginVo){
-            throw new GlobalException( CodeMsg.SERVER_ERROR); //自定义一个RuntimeException类
+            throw new GlobalException( CodeMsg.SERVER_ERROR ); //自定义一个RuntimeException类
         }
         String mobile = loginVo.getMobile();
         String formPass = loginVo.getPassword();
+        System.out.println("------------login mobile---------" + mobile);
+        System.out.println("------------login pass---------" + formPass);
 
-        MiaoshaUser user = getById(Long.parseLong(mobile)); //访问sql, 根据手机id获取用户对象
-
+        MiaoshaUser user = getById(Long.parseLong(mobile)); //连接sql，获取user对象
         if(null==user){
+            System.out.println("------------返回空user---------");
             throw new GlobalException( CodeMsg.MOBILE_NOT_EXIST);
         }
-        //验证密码
+
+        //从user对象密码
         String dbPass = user.getPassword();
         String saltDB = user.getSalt();
-        String calcPass = MD5Util.PassToDBPass(formPass, saltDB);
-        if(!calcPass.equals(dbPass)){
+        System.out.println("------------database password---------" + dbPass);
+        System.out.println("------------database salt---------" + dbPass);
+
+        String calcPass = MD5Util.PassToDBPass(formPass, saltDB); //计算加密后的密码
+        System.out.println("------------calcPass password---------" + calcPass);
+
+        if(!calcPass.equals(dbPass)){//验证输入的密码是否与数据库中的一致
+            System.out.println("------------密码验证失败---------");
             throw new GlobalException(CodeMsg.PASSWORD_ERROR);
         }
 
+        System.out.println("------------密码验证通过---------");
+
         //生成cookie
-        String token = UUIDUtil.uuid();
-        redisService.set(MiaoshaUserKey.tocken, token, user);
-        Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
+        String token = UUIDUtil.uuid(); //随机生成uuid
+        addCookie(response, token, user);
+        System.out.println("------------log token---------"+token);
+        return token;
+    }
+
+    private void addCookie(HttpServletResponse response, String token, MiaoshaUser user){
+        redisService.set(MiaoshaUserKey.tocken, token, user); //在redis中缓存（前缀，uuid，用户对象）
+
+        Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token); //创建cookie
         cookie.setMaxAge(MiaoshaUserKey.tocken.expireSecond());//设置cookie的有效期 为 该用户在redis缓存的有效期
         cookie.setPath("/");
-        response.addCookie(cookie);
-        // session, 跳转到登录后页面
-
-
-        return true;
+        response.addCookie(cookie); //response中插入cookie
     }
 }
