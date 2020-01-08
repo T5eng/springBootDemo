@@ -38,8 +38,9 @@ public class MiaoshaUserService {
         }
         String mobile = loginVo.getMobile();
         String formPass = loginVo.getPassword();
-        //验证手机是否存在
-        MiaoshaUser user = getById(Long.parseLong(mobile));
+
+        MiaoshaUser user = getById(Long.parseLong(mobile)); //访问sql, 根据手机id获取用户对象
+
         if(null==user){
             throw new GlobalException( CodeMsg.MOBILE_NOT_EXIST);
         }

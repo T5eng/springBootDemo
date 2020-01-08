@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.t5eng.miaosha.result.Result;
 import com.t5eng.miaosha.result.CodeMsg;
 
-@Controller
-@RequestMapping("/demo") /**每个@RequestMapping都会增加一个层级 **/
+@Controller // 用于定义控制类 负责将用户的url请求转发到相应的服务接口(service层)
+@RequestMapping("/demo") /**提供路由信息, 负责url到Controller中具体函数的映射. 每个@RequestMapping都会增加一个层级**/
 public class SampleController {
 
     @Autowired

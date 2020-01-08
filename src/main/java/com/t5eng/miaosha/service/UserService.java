@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
+@Service //修饰service层组件
 public class UserService {
 
-    @Autowired
+    @Autowired //自动导入依赖的Bean, 默认byType方式, 可以加上@Qualified("name")指定特定的Bean
     UserDao userDao;
 
     public User getById(int id){
