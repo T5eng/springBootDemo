@@ -47,5 +47,4 @@ public class LoginController {
         return Result.success(token);
     }
 
-
 }
