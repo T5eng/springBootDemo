@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 public class LoginVo {
 
     @NotNull
-    @IsMobile //自定义的修饰符
+    @IsMobile //@Valid @自定义的修饰符
     private String mobile;
     @NotNull
-    @Length(min=32)
+    @Length(min=32)//@Valid @Length(min)验证长度
     private String password;
 
     public String getMobile() {
@@ -32,9 +32,9 @@ public class LoginVo {
 
     @Override
     public String toString() {
-        return "LoginVo{" +
+        return "LoginVo[" +
                 "mobile='" + mobile + '\'' +
                 ", password='" + password + '\'' +
-                '}';
+                "]";
     }
 }

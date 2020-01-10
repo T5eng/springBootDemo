@@ -5,7 +5,7 @@ import org.thymeleaf.util.StringUtils;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.lang.annotation.Annotation;
+
 
 public class IsMobileValidator implements ConstraintValidator <IsMobile, String>{
     private boolean required=false;
@@ -15,15 +15,11 @@ public class IsMobileValidator implements ConstraintValidator <IsMobile, String>
     }
 
     @Override
-    public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-        if(required){
-            return ValidatorUtil.isMobile(s);
+    public boolean isValid(String value, ConstraintValidatorContext constraintValidatorContext) {
+        if(!required && StringUtils.isEmpty(value)){
+            return true;
         }else{
-            if(StringUtils.isEmpty(s)){
-                return true;
-            }else{
-                return ValidatorUtil.isMobile(s);
-            }
+            return ValidatorUtil.isMobile(value);
         }
     }
 }

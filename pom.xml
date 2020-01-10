@@ -32,7 +32,13 @@
         <optional> true </optional>
       </dependency>
 
-      <!--添加springboot网络的依赖-->
+      <!--添加springBoot网络的依赖-->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+      </dependency>
+
+      <!--springBoot热部署的依赖-->
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-web</artifactId>
@@ -104,6 +110,8 @@
 
     </dependencies>
 
+
+
     <build>
       <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
         <plugins>
@@ -145,6 +153,15 @@
           <plugin>
             <artifactId>maven-project-info-reports-plugin</artifactId>
             <version>3.0.0</version>
+          </plugin>
+          <plugin>
+            <!--热部署配置-->
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <configuration>
+              <!--fork:如果没有该项配置,整个devtools不会起作用-->
+              <fork>true</fork>
+            </configuration>
           </plugin>
         </plugins>
       </pluginManagement>

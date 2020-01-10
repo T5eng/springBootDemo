@@ -9,6 +9,7 @@ import com.t5eng.miaosha.result.Result;
 import com.t5eng.miaosha.service.MiaoshaUserService;
 import com.t5eng.miaosha.service.UserService;
 import com.t5eng.miaosha.util.ValidatorUtil;
+import com.t5eng.miaosha.validator.IsMobileValidator;
 import com.t5eng.miaosha.vo.LoginVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +41,12 @@ public class LoginController {
 
     @RequestMapping("/do_login")
     @ResponseBody
-    public Result<String> doLogin(HttpServletResponse response, @Valid LoginVo loginVo){ //校验输入的是否符合规定
+    public Result<String> doLogin(HttpServletResponse response, @Valid LoginVo loginVo){ //校验输入的是否符合规定 修饰符@Valid , 在该类的变量中定义具体验证规则
         log.info(loginVo.toString());
+
         //登录
         String token = miaoshaUserService.login(response, loginVo);
+        System.out.println("miaoshaUserService返回的tocken"+token);
         return Result.success(token);
     }
 
