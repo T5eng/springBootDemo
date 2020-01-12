@@ -1,11 +1,13 @@
 package com.t5eng.miaosha.redis;
 
+import org.junit.Test;
+
 public abstract class BasePrefix implements KeyPrefix{
 
     private int expireSecond;
     private String prefix;
 
-    public BasePrefix(String prefix){//默认0代表永不过期
+    public BasePrefix(String prefix){ // 默认0代表永不过期
         this(0, prefix);
     }
 
@@ -25,4 +27,5 @@ public abstract class BasePrefix implements KeyPrefix{
         String className = getClass().getSimpleName();
         return className + ":" + this.prefix;
     }
+
 }

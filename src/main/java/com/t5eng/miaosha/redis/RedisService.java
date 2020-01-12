@@ -2,6 +2,8 @@ package com.t5eng.miaosha.redis;
 
 
 import com.alibaba.fastjson.JSON;
+import com.t5eng.miaosha.domain.MiaoshaUser;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
@@ -106,6 +108,7 @@ public class RedisService {
         }
     }
 
+
     public boolean delete(KeyPrefix prefix) {
         if(prefix == null) {
             return false;
@@ -123,9 +126,7 @@ public class RedisService {
             e.printStackTrace();
             return false;
         } finally {
-            if(jedis != null) {
-                jedis.close();
-            }
+            returnToPool(jedis);
         }
     }
 
@@ -149,14 +150,13 @@ public class RedisService {
             }while(!cursor.equals("0"));
             return keys;
         } finally {
-            if (jedis != null) {
-                jedis.close();
-            }
+            returnToPool(jedis);
         }
     }
 
+
     /**
-     * bean转String
+     * bean转String 序列化
      */
     public static <T> String beanToString(T value){
         if(null==value) return null;
@@ -168,12 +168,12 @@ public class RedisService {
         }else if(clazz==long.class || clazz==Long.class){
             return ""+value;
         }else{
-            return JSON.toJSONString(value);
+            return JSON.toJSONString(value); //JSON序列化
         }
     }
 
     /**
-     * String转bean
+     * String转bean 反序列化
      */
     @SuppressWarnings("unchecked")//忽略强制类型转换警告
     public static <T> T stringToBean(String str, Class<T> clazz){
@@ -187,14 +187,15 @@ public class RedisService {
         }else if(clazz==long.class || clazz==Long.class){
             return (T)Long.valueOf(str);
         }else{
-            return JSON.toJavaObject(JSON.parseObject(str), clazz);
+            return JSON.toJavaObject(JSON.parseObject(str), clazz); //JSON反序列化
         }
     }
 
     public void returnToPool(Jedis jedis){
-        if(null!=jedis){
+        if(jedis!=null){
             jedis.close();
         }
     }
+
 
 }

@@ -1,24 +1,15 @@
 package com.t5eng.miaosha.controller;
 
-import com.sun.org.apache.bcel.internal.classfile.Code;
-import com.t5eng.miaosha.domain.User;
 import com.t5eng.miaosha.redis.RedisService;
-import com.t5eng.miaosha.redis.UserKey;
-import com.t5eng.miaosha.result.CodeMsg;
 import com.t5eng.miaosha.result.Result;
 import com.t5eng.miaosha.service.MiaoshaUserService;
-import com.t5eng.miaosha.service.UserService;
-import com.t5eng.miaosha.util.ValidatorUtil;
-import com.t5eng.miaosha.validator.IsMobileValidator;
 import com.t5eng.miaosha.vo.LoginVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -36,7 +27,7 @@ public class LoginController {
 
     @RequestMapping("/to_login")
     public String toLogin(){
-        return "login";
+        return "login"; //返回页面名
     }
 
     @RequestMapping("/do_login")
@@ -46,7 +37,7 @@ public class LoginController {
 
         //登录
         String token = miaoshaUserService.login(response, loginVo);
-        System.out.println("miaoshaUserService返回的tocken"+token);
+        System.out.println("miaoshaUserService返回的tocken： "+token);
         return Result.success(token);
     }
 
